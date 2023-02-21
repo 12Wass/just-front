@@ -28,8 +28,8 @@ export default function SimpleCard() {
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <ModalHeader>
             <Stack align={"center"}>
-              <Heading fontSize={"4xl"}>Connectez-vous à votre compte</Heading>
-              <Text fontSize={"lg"} color={"gray.600"}>
+              <Heading fontSize={"3xl"}>Connectez-vous à votre compte</Heading>
+              <Text fontSize={"md"} color={"gray.600"}>
                 pour profiter de toutes nos{" "}
                 <Link color={"blue.400"}>fonctionnalités</Link> ✌️
               </Text>

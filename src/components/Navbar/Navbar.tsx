@@ -25,6 +25,7 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 import SimpleCard from "../Modal/Login/Login";
+import MultiStepRegister from "../Modal/Register/Register";
 
 export default function Navbar() {
   const { isOpen, onOpen, onToggle } = useDisclosure();
@@ -33,6 +34,12 @@ export default function Navbar() {
     onOpen: onOpenModal,
     onClose: onCloseModal,
     onToggle: onToggleModal,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenRegisterModal,
+    onOpen: onOpenRegisterModal,
+    onClose: onCloseRegisterModal,
+    onToggle: onToggleRegisterModal,
   } = useDisclosure();
 
   return (
@@ -103,6 +110,7 @@ export default function Navbar() {
             _hover={{
               bg: "blue.300",
             }}
+            onClick={onOpenRegisterModal}
           >
             Nous rejoindre
           </Button>
@@ -113,6 +121,14 @@ export default function Navbar() {
           >
             <ModalOverlay />
             <SimpleCard />
+          </Modal>
+          <Modal
+            isOpen={isOpenRegisterModal}
+            onClose={onCloseRegisterModal}
+            motionPreset="slideInBottom"
+          >
+            <ModalOverlay />
+            <MultiStepRegister />
           </Modal>
         </Stack>
       </Flex>
@@ -276,15 +292,6 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
     </Stack>
   );
 };
-
-// const LoginModal = (isOpen: boolean, onClose: () => void) => {
-//   console.log("Here");
-//   return (
-//     <Modal isOpen={isOpen} onClose={onClose}>
-//       <SimpleCard />
-//     </Modal>
-//   );
-// };
 
 interface NavItem {
   label: string;
