@@ -111,6 +111,7 @@ export default function Navbar() {
             onClose={onCloseModal}
             motionPreset="slideInBottom"
           >
+            <ModalOverlay />
             <SimpleCard />
           </Modal>
         </Stack>

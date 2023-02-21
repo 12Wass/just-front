@@ -58,7 +58,7 @@ export default function SimpleCard() {
                     justify={"space-between"}
                   >
                     <Checkbox>Rester connecté</Checkbox>
-                    <Link color={"blue.400"}>Mot de passe oublié?</Link>
+                    <Link color={"blue.400"}>Trou de mémoire?</Link>
                   </Stack>
                   <Button
                     bg={"blue.400"}
