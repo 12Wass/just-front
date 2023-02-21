@@ -9,11 +9,14 @@ import {
   Icon,
   Link,
   Popover,
+  Modal,
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  ModalOverlay,
+  ModalContent,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -21,9 +24,16 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import SimpleCard from "../Modal/Login/Login";
 
 export default function Navbar() {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onOpen, onToggle } = useDisclosure();
+  const {
+    isOpen: isOpenModal,
+    onOpen: onOpenModal,
+    onClose: onCloseModal,
+    onToggle: onToggleModal,
+  } = useDisclosure();
 
   return (
     <Box>
@@ -78,6 +88,7 @@ export default function Navbar() {
             fontWeight={400}
             variant={"link"}
             href={"#"}
+            onClick={onOpenModal}
           >
             Se connecter
           </Button>
@@ -95,6 +106,13 @@ export default function Navbar() {
           >
             Nous rejoindre
           </Button>
+          <Modal
+            isOpen={isOpenModal}
+            onClose={onCloseModal}
+            motionPreset="slideInBottom"
+          >
+            <SimpleCard />
+          </Modal>
         </Stack>
       </Flex>
 
@@ -257,6 +275,15 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
     </Stack>
   );
 };
+
+// const LoginModal = (isOpen: boolean, onClose: () => void) => {
+//   console.log("Here");
+//   return (
+//     <Modal isOpen={isOpen} onClose={onClose}>
+//       <SimpleCard />
+//     </Modal>
+//   );
+// };
 
 interface NavItem {
   label: string;
