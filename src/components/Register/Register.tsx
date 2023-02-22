@@ -20,6 +20,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalBody,
+  RadioGroup,
+  HStack,
+  Radio,
 } from "@chakra-ui/react";
 
 import { useToast } from "@chakra-ui/react";
@@ -285,10 +288,37 @@ const Form3 = () => {
   );
 };
 
+const UserChoiceForm = () => {
+  return (
+    <>
+      <Heading w="100%" textAlign={"center"} fontWeight="normal">
+        Réseaux sociaux
+      </Heading>
+      <SimpleGrid columns={1} spacing={6}>
+        <FormControl as="fieldset">
+          <FormLabel as="legend">
+            Êtes-vous un laveur ou un particulier ?
+          </FormLabel>
+          <RadioGroup defaultValue="Particulier">
+            <HStack spacing="24px">
+              <Radio value="Laveur">Laveur</Radio>
+              <Radio value="Particulier">Particulier</Radio>
+            </HStack>
+          </RadioGroup>
+          <FormHelperText>
+            Sélectionnez le type d'utilisateur que vous êtes.
+          </FormHelperText>
+        </FormControl>{" "}
+      </SimpleGrid>
+    </>
+  );
+};
+
 export default function MultiStepRegister() {
   const toast = useToast();
   const [step, setStep] = useState(1);
-  const [progress, setProgress] = useState(33.33);
+  const [progress, setProgress] = useState(25);
+  const [userChoice, setUserChoice] = useState();
   return (
     <Box
       borderWidth="1px"
@@ -306,7 +336,7 @@ export default function MultiStepRegister() {
         mx="5%"
         isAnimated
       ></Progress>
-      {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
+      {step === 1 ? <UserChoiceForm /> : step === 2 ? <Form2 /> : <Form3 />}
 
       <ButtonGroup mt="5%" w="100%">
         <Flex w="100%" justifyContent="space-between">
@@ -314,7 +344,7 @@ export default function MultiStepRegister() {
             <Button
               onClick={() => {
                 setStep(step - 1);
-                setProgress(progress - 33.33);
+                setProgress(progress - 25);
               }}
               isDisabled={step === 1}
               colorScheme="teal"
@@ -332,7 +362,7 @@ export default function MultiStepRegister() {
                 if (step === 3) {
                   setProgress(100);
                 } else {
-                  setProgress(progress + 33.33);
+                  setProgress(progress + 25);
                 }
               }}
               colorScheme="teal"
