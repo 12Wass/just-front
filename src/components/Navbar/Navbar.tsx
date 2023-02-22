@@ -25,7 +25,6 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 import SimpleCard from "../Modal/Login/Login";
-import MultiStepRegister from "../Modal/Register/Register";
 
 export default function Navbar() {
   const { isOpen, onOpen, onToggle } = useDisclosure();
@@ -70,13 +69,14 @@ export default function Navbar() {
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Text
+          <Link
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
             fontFamily={"heading"}
             color={useColorModeValue("gray.800", "white")}
+            href={"/"}
           >
             Just Clean
-          </Text>
+          </Link>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
@@ -106,11 +106,10 @@ export default function Navbar() {
             fontWeight={600}
             color={"white"}
             bg={"blue.400"}
-            href={"#"}
+            href={"/register"}
             _hover={{
               bg: "blue.300",
             }}
-            onClick={onOpenRegisterModal}
           >
             Nous rejoindre
           </Button>
@@ -121,14 +120,6 @@ export default function Navbar() {
           >
             <ModalOverlay />
             <SimpleCard />
-          </Modal>
-          <Modal
-            isOpen={isOpenRegisterModal}
-            onClose={onCloseRegisterModal}
-            motionPreset="slideInBottom"
-          >
-            <ModalOverlay />
-            <MultiStepRegister />
           </Modal>
         </Stack>
       </Flex>
