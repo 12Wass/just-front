@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import {
   Progress,
   Box,
@@ -26,6 +26,41 @@ import {
 } from "@chakra-ui/react";
 
 import { useToast } from "@chakra-ui/react";
+
+/**
+ * Intefaces & Next/Back functions
+ */
+interface UserChoiceProps {
+  userChoice: Dispatch<SetStateAction<string>>;
+}
+
+const Next = (
+  progress: number,
+  setProgress: Dispatch<SetStateAction<number>>,
+  step: number,
+  setStep: Dispatch<SetStateAction<number>>
+) => {
+  setStep(step + 1);
+  if (step === 3) {
+    setProgress(100);
+  } else {
+    setProgress(progress + 25);
+  }
+};
+
+const Back = (
+  progress: number,
+  setProgress: Dispatch<SetStateAction<number>>,
+  step: number,
+  setStep: Dispatch<SetStateAction<number>>
+) => {
+  setStep(step - 1);
+  setProgress(progress - 25);
+};
+
+/**
+ * Washer / Client / Address forms
+ */
 
 const Form1 = () => {
   const [show, setShow] = React.useState(false);
@@ -81,11 +116,153 @@ const Form1 = () => {
   );
 };
 
-const Form2 = () => {
+const WasherForm = () => {
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
-        Détails utilisateur
+        Détails laveur
+      </Heading>
+      <FormControl as={GridItem} colSpan={[6, 3]}>
+        <FormLabel
+          htmlFor="country"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+        >
+          Région
+        </FormLabel>
+        <Select
+          id="country"
+          name="country"
+          autoComplete="country"
+          placeholder="Pays"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        >
+          <option>Île-de-France</option>
+          <option>Eure-et-loire</option>
+          <option>PACA</option>
+        </Select>
+      </FormControl>
+
+      <FormControl as={GridItem} colSpan={6}>
+        <FormLabel
+          htmlFor="street_address"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+          mt="2%"
+        >
+          Adresse
+        </FormLabel>
+        <Input
+          type="text"
+          name="street_address"
+          id="street_address"
+          autoComplete="street-address"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        />
+      </FormControl>
+
+      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
+        <FormLabel
+          htmlFor="city"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+          mt="2%"
+        >
+          Ville
+        </FormLabel>
+        <Input
+          type="text"
+          name="city"
+          id="city"
+          autoComplete="city"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        />
+      </FormControl>
+
+      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
+        <FormLabel
+          htmlFor="state"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+          mt="2%"
+        >
+          État / Province
+        </FormLabel>
+        <Input
+          type="text"
+          name="state"
+          id="state"
+          autoComplete="state"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        />
+      </FormControl>
+
+      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
+        <FormLabel
+          htmlFor="postal_code"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+          mt="2%"
+        >
+          Code postal
+        </FormLabel>
+        <Input
+          type="text"
+          name="postal_code"
+          id="postal_code"
+          autoComplete="postal-code"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        />
+      </FormControl>
+    </>
+  );
+};
+
+const ClientForm = () => {
+  return (
+    <>
+      <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
+        Détails particulier
       </Heading>
       <FormControl as={GridItem} colSpan={[6, 3]}>
         <FormLabel
@@ -288,18 +465,23 @@ const Form3 = () => {
   );
 };
 
-const UserChoiceForm = () => {
+const UserChoiceForm = (props: UserChoiceProps) => {
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="normal">
-        Réseaux sociaux
+        Qui êtes-vous ?
       </Heading>
       <SimpleGrid columns={1} spacing={6}>
         <FormControl as="fieldset">
           <FormLabel as="legend">
             Êtes-vous un laveur ou un particulier ?
           </FormLabel>
-          <RadioGroup defaultValue="Particulier">
+          <RadioGroup
+            defaultValue="Particulier"
+            onChange={(value) => {
+              props.userChoice(value);
+            }}
+          >
             <HStack spacing="24px">
               <Radio value="Laveur">Laveur</Radio>
               <Radio value="Particulier">Particulier</Radio>
@@ -318,7 +500,7 @@ export default function MultiStepRegister() {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(25);
-  const [userChoice, setUserChoice] = useState();
+  const [userChoice, setUserChoice] = useState("Particulier");
   return (
     <Box
       borderWidth="1px"
@@ -336,16 +518,21 @@ export default function MultiStepRegister() {
         mx="5%"
         isAnimated
       ></Progress>
-      {step === 1 ? <UserChoiceForm /> : step === 2 ? <Form2 /> : <Form3 />}
+      {step === 1 ? (
+        <UserChoiceForm userChoice={setUserChoice} />
+      ) : step === 2 && userChoice === "Particulier" ? (
+        <ClientForm />
+      ) : step === 2 && userChoice === "Laveur" ? (
+        <WasherForm />
+      ) : (
+        <Form1 />
+      )}
 
       <ButtonGroup mt="5%" w="100%">
         <Flex w="100%" justifyContent="space-between">
           <Flex>
             <Button
-              onClick={() => {
-                setStep(step - 1);
-                setProgress(progress - 25);
-              }}
+              onClick={() => Back(progress, setProgress, step, setStep)}
               isDisabled={step === 1}
               colorScheme="teal"
               variant="solid"
@@ -357,14 +544,7 @@ export default function MultiStepRegister() {
             <Button
               w="7rem"
               isDisabled={step === 3}
-              onClick={() => {
-                setStep(step + 1);
-                if (step === 3) {
-                  setProgress(100);
-                } else {
-                  setProgress(progress + 25);
-                }
-              }}
+              onClick={() => Next(progress, setProgress, step, setStep)}
               colorScheme="teal"
               variant="outline"
             >
