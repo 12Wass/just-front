@@ -31,20 +31,23 @@ import { useToast } from "@chakra-ui/react";
  * Intefaces & Next/Back functions
  */
 interface UserChoiceProps {
-  userChoice: Dispatch<SetStateAction<string>>;
+  userChoice: string;
+  setUserChoice: Dispatch<SetStateAction<string>>;
 }
 
 const Next = (
   progress: number,
   setProgress: Dispatch<SetStateAction<number>>,
   step: number,
-  setStep: Dispatch<SetStateAction<number>>
+  setStep: Dispatch<SetStateAction<number>>,
+  userChoice: string
 ) => {
   setStep(step + 1);
-  if (step === 3) {
+  if (step === 4 || (step === 3 && userChoice === "Particulier")) {
     setProgress(100);
   } else {
-    setProgress(progress + 25);
+    if (userChoice === "Laveur") setProgress(progress + 25);
+    else setProgress(progress + 33.33);
   }
 };
 
@@ -52,17 +55,20 @@ const Back = (
   progress: number,
   setProgress: Dispatch<SetStateAction<number>>,
   step: number,
-  setStep: Dispatch<SetStateAction<number>>
+  setStep: Dispatch<SetStateAction<number>>,
+  userChoice: string
 ) => {
   setStep(step - 1);
-  setProgress(progress - 25);
+  userChoice === "Particulier"
+    ? setProgress(progress - 25)
+    : setProgress(progress - 33.33);
 };
 
 /**
  * Washer / Client / Address forms
  */
 
-const Form1 = () => {
+const InformationsForm = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   return (
@@ -116,291 +122,149 @@ const Form1 = () => {
   );
 };
 
+const AddressForm = () => {
+  return (
+    <>
+      <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
+        Adresse
+      </Heading>
+      <FormControl as={GridItem} colSpan={[6, 3]}>
+        <FormLabel
+          htmlFor="country"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+        >
+          Région
+        </FormLabel>
+        <Select
+          id="country"
+          name="country"
+          autoComplete="country"
+          placeholder="Pays"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        >
+          <option>Île-de-France</option>
+          <option>Eure-et-loire</option>
+          <option>PACA</option>
+        </Select>
+      </FormControl>
+
+      <FormControl as={GridItem} colSpan={6}>
+        <FormLabel
+          htmlFor="street_address"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+          mt="2%"
+        >
+          Adresse
+        </FormLabel>
+        <Input
+          type="text"
+          name="street_address"
+          id="street_address"
+          autoComplete="street-address"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        />
+      </FormControl>
+
+      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
+        <FormLabel
+          htmlFor="city"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+          mt="2%"
+        >
+          Ville
+        </FormLabel>
+        <Input
+          type="text"
+          name="city"
+          id="city"
+          autoComplete="city"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        />
+      </FormControl>
+
+      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
+        <FormLabel
+          htmlFor="state"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+          mt="2%"
+        >
+          État / Province
+        </FormLabel>
+        <Input
+          type="text"
+          name="state"
+          id="state"
+          autoComplete="state"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        />
+      </FormControl>
+
+      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
+        <FormLabel
+          htmlFor="postal_code"
+          fontSize="sm"
+          fontWeight="md"
+          color="gray.700"
+          _dark={{
+            color: "gray.50",
+          }}
+          mt="2%"
+        >
+          Code postal
+        </FormLabel>
+        <Input
+          type="text"
+          name="postal_code"
+          id="postal_code"
+          autoComplete="postal-code"
+          focusBorderColor="brand.400"
+          shadow="sm"
+          size="sm"
+          w="full"
+          rounded="md"
+        />
+      </FormControl>
+    </>
+  );
+};
+
 const WasherForm = () => {
-  return (
-    <>
-      <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
-        Détails laveur
-      </Heading>
-      <FormControl as={GridItem} colSpan={[6, 3]}>
-        <FormLabel
-          htmlFor="country"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-        >
-          Région
-        </FormLabel>
-        <Select
-          id="country"
-          name="country"
-          autoComplete="country"
-          placeholder="Pays"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        >
-          <option>Île-de-France</option>
-          <option>Eure-et-loire</option>
-          <option>PACA</option>
-        </Select>
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={6}>
-        <FormLabel
-          htmlFor="street_address"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          Adresse
-        </FormLabel>
-        <Input
-          type="text"
-          name="street_address"
-          id="street_address"
-          autoComplete="street-address"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
-        <FormLabel
-          htmlFor="city"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          Ville
-        </FormLabel>
-        <Input
-          type="text"
-          name="city"
-          id="city"
-          autoComplete="city"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="state"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          État / Province
-        </FormLabel>
-        <Input
-          type="text"
-          name="state"
-          id="state"
-          autoComplete="state"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="postal_code"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          Code postal
-        </FormLabel>
-        <Input
-          type="text"
-          name="postal_code"
-          id="postal_code"
-          autoComplete="postal-code"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-    </>
-  );
-};
-
-const ClientForm = () => {
-  return (
-    <>
-      <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
-        Détails particulier
-      </Heading>
-      <FormControl as={GridItem} colSpan={[6, 3]}>
-        <FormLabel
-          htmlFor="country"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-        >
-          Région
-        </FormLabel>
-        <Select
-          id="country"
-          name="country"
-          autoComplete="country"
-          placeholder="Pays"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        >
-          <option>Île-de-France</option>
-          <option>Eure-et-loire</option>
-          <option>PACA</option>
-        </Select>
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={6}>
-        <FormLabel
-          htmlFor="street_address"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          Adresse
-        </FormLabel>
-        <Input
-          type="text"
-          name="street_address"
-          id="street_address"
-          autoComplete="street-address"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
-        <FormLabel
-          htmlFor="city"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          Ville
-        </FormLabel>
-        <Input
-          type="text"
-          name="city"
-          id="city"
-          autoComplete="city"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="state"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          État / Province
-        </FormLabel>
-        <Input
-          type="text"
-          name="state"
-          id="state"
-          autoComplete="state"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="postal_code"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          Code postal
-        </FormLabel>
-        <Input
-          type="text"
-          name="postal_code"
-          id="postal_code"
-          autoComplete="postal-code"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-    </>
-  );
-};
-
-const Form3 = () => {
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="normal">
@@ -477,9 +341,9 @@ const UserChoiceForm = (props: UserChoiceProps) => {
             Êtes-vous un laveur ou un particulier ?
           </FormLabel>
           <RadioGroup
-            defaultValue="Particulier"
+            defaultValue={props.userChoice}
             onChange={(value) => {
-              props.userChoice(value);
+              props.setUserChoice(value);
             }}
           >
             <HStack spacing="24px">
@@ -519,20 +383,24 @@ export default function MultiStepRegister() {
         isAnimated
       ></Progress>
       {step === 1 ? (
-        <UserChoiceForm userChoice={setUserChoice} />
-      ) : step === 2 && userChoice === "Particulier" ? (
-        <ClientForm />
-      ) : step === 2 && userChoice === "Laveur" ? (
+        <UserChoiceForm setUserChoice={setUserChoice} userChoice={userChoice} />
+      ) : step === 2 ? (
+        <InformationsForm />
+      ) : step === 3 ? (
+        <AddressForm />
+      ) : step === 4 && userChoice === "Laveur" ? (
         <WasherForm />
       ) : (
-        <Form1 />
+        "Une erreur est survenue"
       )}
 
       <ButtonGroup mt="5%" w="100%">
         <Flex w="100%" justifyContent="space-between">
           <Flex>
             <Button
-              onClick={() => Back(progress, setProgress, step, setStep)}
+              onClick={() =>
+                Back(progress, setProgress, step, setStep, userChoice)
+              }
               isDisabled={step === 1}
               colorScheme="teal"
               variant="solid"
@@ -543,15 +411,19 @@ export default function MultiStepRegister() {
             </Button>
             <Button
               w="7rem"
-              isDisabled={step === 3}
-              onClick={() => Next(progress, setProgress, step, setStep)}
+              isDisabled={
+                step === 4 || (step === 3 && userChoice === "Particulier")
+              }
+              onClick={() =>
+                Next(progress, setProgress, step, setStep, userChoice)
+              }
               colorScheme="teal"
               variant="outline"
             >
               Next
             </Button>
           </Flex>
-          {step === 3 ? (
+          {step === 4 || (step === 3 && userChoice === "Particulier") ? (
             <Button
               w="7rem"
               colorScheme="red"
