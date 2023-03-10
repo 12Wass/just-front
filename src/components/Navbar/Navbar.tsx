@@ -16,7 +16,6 @@ import {
   useBreakpointValue,
   useDisclosure,
   ModalOverlay,
-  ModalContent,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -32,13 +31,6 @@ export default function Navbar() {
     isOpen: isOpenModal,
     onOpen: onOpenModal,
     onClose: onCloseModal,
-    onToggle: onToggleModal,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenRegisterModal,
-    onOpen: onOpenRegisterModal,
-    onClose: onCloseRegisterModal,
-    onToggle: onToggleRegisterModal,
   } = useDisclosure();
 
   return (

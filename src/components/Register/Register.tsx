@@ -1,32 +1,20 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState } from "react";
 import {
-  Progress,
   Box,
   ButtonGroup,
   Button,
   Heading,
   Flex,
   FormControl,
-  GridItem,
   FormLabel,
-  Input,
-  Select,
   SimpleGrid,
-  InputLeftAddon,
-  InputGroup,
-  Textarea,
-  FormHelperText,
-  InputRightElement,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
   RadioGroup,
   HStack,
   Radio,
   useToast,
+  FormHelperText,
 } from "@chakra-ui/react";
 
-import { UserInfosProps } from "../../helpers/interfaces/UserInfos.props";
 import { UserForm } from "../../helpers/interfaces/UserForm.interface";
 import { UserChoiceProps } from "../../helpers/interfaces/UserChoice.props";
 import { InformationsForm } from "./Forms/InformationsForm";
@@ -35,35 +23,6 @@ import { WasherForm } from "./Forms/WasherForm";
 /**
  *  Next/Back functions
  */
-
-const Next = (
-  progress: number,
-  setProgress: Dispatch<SetStateAction<number>>,
-  step: number,
-  setStep: Dispatch<SetStateAction<number>>,
-  userChoice: string
-) => {
-  setStep(step + 1);
-  if (step === 4 || (step === 3 && userChoice === "Particulier")) {
-    setProgress(100);
-  } else {
-    if (userChoice === "Laveur") setProgress(progress + 25);
-    else setProgress(progress + 33.33);
-  }
-};
-
-const Back = (
-  progress: number,
-  setProgress: Dispatch<SetStateAction<number>>,
-  step: number,
-  setStep: Dispatch<SetStateAction<number>>,
-  userChoice: string
-) => {
-  setStep(step - 1);
-  userChoice === "Particulier"
-    ? setProgress(progress - 25)
-    : setProgress(progress - 33.33);
-};
 
 const UserChoiceForm = (props: UserChoiceProps) => {
   return (
@@ -99,11 +58,9 @@ const UserChoiceForm = (props: UserChoiceProps) => {
 export default function MultiStepRegister() {
   const toast = useToast();
   const [step, setStep] = useState(1);
-  const [progress, setProgress] = useState(25);
   const [userChoice, setUserChoice] = useState("Particulier");
   const [userInfos, setUserInfos] = useState<UserForm>();
 
-  console.log(userInfos);
   return (
     <Box
       borderWidth="1px"
@@ -114,21 +71,14 @@ export default function MultiStepRegister() {
       m="10px auto"
       as="form"
     >
-      <Progress
-        hasStripe
-        value={progress}
-        mb="5%"
-        mx="5%"
-        isAnimated
-      ></Progress>
       {step === 1 ? (
         <UserChoiceForm setUserChoice={setUserChoice} userChoice={userChoice} />
       ) : step === 2 ? (
         <InformationsForm userInfos={userInfos} setUserInfos={setUserInfos} />
       ) : step === 3 ? (
-        <AddressForm />
+        <AddressForm userInfos={userInfos} setUserInfos={setUserInfos} />
       ) : step === 4 && userChoice === "Laveur" ? (
-        <WasherForm />
+        <WasherForm userInfos={userInfos} setUserInfos={setUserInfos} />
       ) : (
         "Une erreur est survenue"
       )}
@@ -137,9 +87,7 @@ export default function MultiStepRegister() {
         <Flex w="100%" justifyContent="space-between">
           <Flex>
             <Button
-              onClick={() =>
-                Back(progress, setProgress, step, setStep, userChoice)
-              }
+              onClick={() => setStep(step - 1)}
               isDisabled={step === 1}
               colorScheme="teal"
               variant="solid"
@@ -153,9 +101,7 @@ export default function MultiStepRegister() {
               isDisabled={
                 step === 4 || (step === 3 && userChoice === "Particulier")
               }
-              onClick={() =>
-                Next(progress, setProgress, step, setStep, userChoice)
-              }
+              onClick={() => setStep(step + 1)}
               colorScheme="teal"
               variant="outline"
             >

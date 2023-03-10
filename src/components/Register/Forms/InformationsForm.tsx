@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Flex,
@@ -11,11 +11,9 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { UserInfosProps } from "../../../helpers/interfaces/UserInfos.props";
-import { UserInfosEnum } from "../../../helpers/enums/UserInfos.enum";
 export const InformationsForm = (props: UserInfosProps) => {
   const [show, setShow] = React.useState(false);
   const handlePassword = () => setShow(!show);
-  console.log(props.userInfos);
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
@@ -29,7 +27,7 @@ export const InformationsForm = (props: UserInfosProps) => {
           <Input
             id="pseudo"
             placeholder="Pseudo"
-            value={props?.userInfos?.pseudo}
+            value={props?.userInfos?.pseudo || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               props.setUserInfos({
                 ...props.userInfos,
@@ -46,7 +44,7 @@ export const InformationsForm = (props: UserInfosProps) => {
           <Input
             id="firstName"
             placeholder="Prénom"
-            value={props?.userInfos?.firstName}
+            value={props?.userInfos?.firstName || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               props.setUserInfos({
                 ...props.userInfos,
@@ -63,7 +61,7 @@ export const InformationsForm = (props: UserInfosProps) => {
           <Input
             id="lastName"
             placeholder="Nom"
-            value={props?.userInfos?.lastName}
+            value={props?.userInfos?.lastName || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               props.setUserInfos({
                 ...props.userInfos,
@@ -80,7 +78,7 @@ export const InformationsForm = (props: UserInfosProps) => {
         <Input
           id="email"
           type="email"
-          value={props?.userInfos?.email}
+          value={props?.userInfos?.email || ""}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.setUserInfos({
               ...props.userInfos,
@@ -102,7 +100,7 @@ export const InformationsForm = (props: UserInfosProps) => {
             pr="4.5rem"
             type={show ? "text" : "password"}
             placeholder="Mot de passe"
-            value={props?.userInfos?.password}
+            value={props?.userInfos?.password || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               props.setUserInfos({
                 ...props.userInfos,
@@ -127,7 +125,7 @@ export const InformationsForm = (props: UserInfosProps) => {
             id="confirmation"
             type="password"
             placeholder="Mot de passe"
-            value={props?.userInfos?.confirmation}
+            value={props?.userInfos?.confirmation || ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               props.setUserInfos({
                 ...props.userInfos,

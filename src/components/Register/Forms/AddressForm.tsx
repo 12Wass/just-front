@@ -6,8 +6,27 @@ import {
   Select,
   Input,
 } from "@chakra-ui/react";
+import { usePlacesWidget } from "react-google-autocomplete";
+import { UserInfosProps } from "../../../helpers/interfaces/UserInfos.props";
 
-export const AddressForm = () => {
+export const AddressForm = (props: UserInfosProps) => {
+  const { ref } = usePlacesWidget({
+    apiKey: process.env.REACT_APP_GCP_MAPS_API_KEY,
+    options: {
+      types: ["address"],
+      componentRestrictions: { country: "fr" },
+    },
+    onPlaceSelected: (place) => {
+      props.setUserInfos({
+        ...props.userInfos,
+        address: {
+          lat: place.geometry?.location?.lat().toString() as string,
+          lng: place.geometry?.location?.lng().toString() as string,
+        },
+      });
+    },
+  });
+
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
@@ -65,6 +84,7 @@ export const AddressForm = () => {
           size="sm"
           w="full"
           rounded="md"
+          ref={ref}
         />
       </FormControl>
 
