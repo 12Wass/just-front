@@ -10,7 +10,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { UserInfosProps } from "../../../helpers/interfaces/UserInfos.props";
+import { UserInfosProps } from "../../../helpers/props/UserInfos.props";
 export const InformationsForm = (props: UserInfosProps) => {
   const [show, setShow] = React.useState(false);
   const handlePassword = () => setShow(!show);

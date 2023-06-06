@@ -1,20 +1,6 @@
-import { GoogleMapProps } from "@react-google-maps/api";
+import { User } from "./User.interface";
 
-export interface UserForm {
-    pseudo?: string;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    password?: string;
-    confirmation?: string;
-  
-    address?: {
-      lat: string,
-      lng: string,
-    };
-    postalCode?: number;
-
-    /* Washer */
+export interface Washer extends User {
     description?: string | undefined;
     siret?: number | undefined;
     companyName?: string | undefined;
@@ -30,4 +16,4 @@ export interface UserForm {
     atProHome?: boolean | undefined;
 
     radius?: number | undefined;
-  }
+}

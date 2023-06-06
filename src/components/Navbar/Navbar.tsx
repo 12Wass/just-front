@@ -26,7 +26,7 @@ import {
 import SimpleCard from "../Modal/Login/Login";
 
 export default function Navbar() {
-  const { isOpen, onOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure();
   const {
     isOpen: isOpenModal,
     onOpen: onOpenModal,

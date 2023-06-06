@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import Navbar from "./components/Navbar/Navbar";

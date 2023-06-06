@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   ButtonGroup,
@@ -15,11 +15,11 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 
-import { UserForm } from "../../helpers/interfaces/UserForm.interface";
-import { UserChoiceProps } from "../../helpers/interfaces/UserChoice.props";
+import { UserChoiceProps } from "../../helpers/props/UserChoice.props";
 import { InformationsForm } from "./Forms/InformationsForm";
 import { AddressForm } from "./Forms/AddressForm";
 import { WasherForm } from "./Forms/WasherForm";
+import { Washer } from "../../helpers/interfaces/Washer.interface";
 /**
  *  Next/Back functions
  */
@@ -59,7 +59,7 @@ export default function MultiStepRegister() {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [userChoice, setUserChoice] = useState("Particulier");
-  const [userInfos, setUserInfos] = useState<UserForm>();
+  const [userInfos, setUserInfos] = useState<Washer>();
 
   return (
     <Box

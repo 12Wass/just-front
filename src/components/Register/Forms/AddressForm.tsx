@@ -3,11 +3,11 @@ import {
   FormControl,
   GridItem,
   FormLabel,
-  Select,
   Input,
 } from "@chakra-ui/react";
+import { RefObject } from "react";
 import { usePlacesWidget } from "react-google-autocomplete";
-import { UserInfosProps } from "../../../helpers/interfaces/UserInfos.props";
+import { UserInfosProps } from "../../../helpers/props/UserInfos.props";
 
 export const AddressForm = (props: UserInfosProps) => {
   const { ref } = usePlacesWidget({
@@ -17,9 +17,11 @@ export const AddressForm = (props: UserInfosProps) => {
       componentRestrictions: { country: "fr" },
     },
     onPlaceSelected: (place) => {
+      // place.address_components.map() -> récupérer les valeurs en fonction du contenu de "types"
+      // stocker les valeurs dans des variables dédiées puis les envoyer avec le state ci-dessous.
       props.setUserInfos({
         ...props.userInfos,
-        address: {
+        addressPos: {
           lat: place.geometry?.location?.lat().toString() as string,
           lng: place.geometry?.location?.lng().toString() as string,
         },
@@ -32,35 +34,6 @@ export const AddressForm = (props: UserInfosProps) => {
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
         Adresse
       </Heading>
-      <FormControl as={GridItem} colSpan={[6, 3]}>
-        <FormLabel
-          htmlFor="country"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-        >
-          Région
-        </FormLabel>
-        <Select
-          id="country"
-          name="country"
-          autoComplete="country"
-          placeholder="Pays"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        >
-          <option>Île-de-France</option>
-          <option>Eure-et-loire</option>
-          <option>PACA</option>
-        </Select>
-      </FormControl>
-
       <FormControl as={GridItem} colSpan={6}>
         <FormLabel
           htmlFor="street_address"
@@ -84,85 +57,7 @@ export const AddressForm = (props: UserInfosProps) => {
           size="sm"
           w="full"
           rounded="md"
-          ref={ref}
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
-        <FormLabel
-          htmlFor="city"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          Ville
-        </FormLabel>
-        <Input
-          type="text"
-          name="city"
-          id="city"
-          autoComplete="city"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="state"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          État / Province
-        </FormLabel>
-        <Input
-          type="text"
-          name="state"
-          id="state"
-          autoComplete="state"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
-
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="postal_code"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: "gray.50",
-          }}
-          mt="2%"
-        >
-          Code postal
-        </FormLabel>
-        <Input
-          type="text"
-          name="postal_code"
-          id="postal_code"
-          autoComplete="postal-code"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
+          ref={ref as unknown as RefObject<HTMLInputElement>}
         />
       </FormControl>
     </>
