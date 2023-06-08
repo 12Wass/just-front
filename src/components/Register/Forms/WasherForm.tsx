@@ -24,10 +24,6 @@ export const WasherForm = (props: UserInfosProps) => {
   const [map, setMap] = useState(null);
   const [radiusSlider, setRadiusSlider] = useState(0);
 
-  console.log(props.userInfos);
-
-  // Envoyer le radiusSlider séparément pour faire en sorte de re-render le cercle à chaque fois qu'on modifier le slider.
-
   const options = {
     strokeColor: "#FF0000",
     strokeOpacity: 0.8,

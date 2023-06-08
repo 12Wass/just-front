@@ -61,5 +61,4 @@ const RenderMap: React.FC<MapType> = ({ center, setMap, options }) => {
   );
 };
 
-//@ts-ignore
 export default React.memo(RenderMap);

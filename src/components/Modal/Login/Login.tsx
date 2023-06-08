@@ -15,8 +15,17 @@ import {
   ModalHeader,
   ModalBody,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { AppService } from "../../../helpers/api/users.service";
 
 export default function SimpleCard() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const handleClick = () => {
+    console.log("Logging user in");
+    // Validate informations
+    AppService.login(email, password);
+  };
   return (
     <ModalContent>
       <Flex
@@ -45,11 +54,21 @@ export default function SimpleCard() {
               <Stack spacing={4}>
                 <FormControl id="email">
                   <FormLabel>Adresse e-mail</FormLabel>
-                  <Input type="email" />
+                  <Input
+                    type="email"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
                 </FormControl>
                 <FormControl id="password">
                   <FormLabel>Mot de passe</FormLabel>
-                  <Input type="password" />
+                  <Input
+                    type="password"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setPassword(e.target.value);
+                    }}
+                  />
                 </FormControl>
                 <Stack spacing={10}>
                   <Stack
@@ -66,6 +85,7 @@ export default function SimpleCard() {
                     _hover={{
                       bg: "blue.500",
                     }}
+                    onClick={handleClick}
                   >
                     Connexion
                   </Button>
