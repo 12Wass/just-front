@@ -24,6 +24,7 @@ export default function SimpleCard() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const handleClick = async () => {
+    // validation de formulaire avant l'envoi de la requête (yup / joi) pour éviter les reqs. inutiles.
     try {
       await UserService.login(email, password);
     } catch (error) {
