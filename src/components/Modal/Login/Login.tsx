@@ -14,17 +14,27 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { AppService } from "../../../helpers/api/users.service";
+import { UserService } from "../../../helpers/api/users.service";
 
 export default function SimpleCard() {
+  const toast = useToast();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const handleClick = () => {
-    console.log("Logging user in");
-    // Validate informations
-    AppService.login(email, password);
+  const handleClick = async () => {
+    try {
+      await UserService.login(email, password);
+    } catch (error) {
+      toast({
+        title: "Échec de la connexion",
+        description: "Une erreur est survenue.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
   return (
     <ModalContent>

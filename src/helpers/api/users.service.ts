@@ -1,4 +1,4 @@
-export class AppService {
+export class UserService {
     static async login(email: string, password: string): Promise<any> {
         const response = await fetch(`${process.env.REACT_APP_STRAPI}/api/auth/local`, {
             method: 'POST',
@@ -10,9 +10,9 @@ export class AppService {
 
         if (response.status === 200) {
             const user = await response.json();
+            // Store into localStorage / Redux when set up ?
             return user;
-        } else {
-            throw new Error('An error occured. Please retry.');
         }
+        throw new Error('An error occured. Please retry.');
     }
 }
