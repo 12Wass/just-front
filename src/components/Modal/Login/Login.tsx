@@ -17,25 +17,32 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { UserService } from "../../../helpers/api/users.service";
+import { useAppDispatch } from "../../../helpers/api/hooks";
+import { loginUser } from "../../../helpers/api/actions/auth.action";
+import store from "../../../helpers/api/store/store";
 
 export default function SimpleCard() {
   const toast = useToast();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const dispatch = useAppDispatch();
+
   const handleClick = async () => {
-    // validation de formulaire avant l'envoi de la requête (yup / joi) pour éviter les reqs. inutiles.
-    try {
-      await UserService.login(email, password);
-    } catch (error) {
-      toast({
-        title: "Échec de la connexion",
-        description: "Une erreur est survenue.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
+    await dispatch(loginUser({ email, password }))
+      .unwrap()
+      .then((response) => {
+        console.log(store.getState().auth); // L'utilisateur est bien sauvegardé
+      })
+      .catch((error) => {
+        console.log(error);
+        toast({
+          title: "Échec de la connexion",
+          description: "Une erreur est survenue.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       });
-    }
   };
   return (
     <ModalContent>

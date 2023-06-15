@@ -6,6 +6,8 @@ import CallToActionWithVideo from "./components/Hero/Hero";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./components/Error/NotFound";
 import MultiStepRegister from "./components/Register/Register";
+import { Provider } from "react-redux";
+import store from "./helpers/api/store/store";
 
 const router = createBrowserRouter([
   {
@@ -29,10 +31,12 @@ const theme = extendTheme({
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <div className="App">
-        <Navbar />
-        <RouterProvider router={router} />
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          <Navbar />
+          <RouterProvider router={router} />
+        </div>
+      </Provider>
     </ChakraProvider>
   );
 }

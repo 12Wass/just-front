@@ -1,5 +1,3 @@
-import { GoogleMapProps } from "@react-google-maps/api";
-import { Washer } from "./Washer.interface"
 import { Address } from "./Address.interface"
 
 export interface User extends Address {
@@ -10,4 +8,9 @@ export interface User extends Address {
     password?: string;
     confirmation?: string;
 
+  }
+
+  export interface UserLogin {
+    email: string,
+    password: string,
   }
