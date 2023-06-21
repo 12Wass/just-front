@@ -24,6 +24,7 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 import SimpleCard from "../Modal/Login/Login";
+import { store } from "../../helpers/api/store/store";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();

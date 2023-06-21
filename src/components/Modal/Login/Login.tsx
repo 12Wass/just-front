@@ -19,7 +19,7 @@ import {
 import { useState } from "react";
 import { useAppDispatch } from "../../../helpers/api/hooks";
 import { loginUser } from "../../../helpers/api/actions/auth.action";
-import store from "../../../helpers/api/store/store";
+import { store } from "../../../helpers/api/store/store";
 
 export default function SimpleCard() {
   const toast = useToast();
@@ -30,10 +30,17 @@ export default function SimpleCard() {
   const handleClick = async () => {
     await dispatch(loginUser({ email, password }))
       .unwrap()
-      .then((response) => {
+      .then((response: any) => {
         console.log(store.getState().auth); // L'utilisateur est bien sauvegardé
+        toast({
+          title: "Connexion réussie !",
+          description: "Redirection en cours...",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log(error);
         toast({
           title: "Échec de la connexion",

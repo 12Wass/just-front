@@ -7,7 +7,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./components/Error/NotFound";
 import MultiStepRegister from "./components/Register/Register";
 import { Provider } from "react-redux";
-import store from "./helpers/api/store/store";
+import { persistor, store } from "./helpers/api/store/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const router = createBrowserRouter([
   {
@@ -32,10 +33,12 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <Provider store={store}>
-        <div className="App">
-          <Navbar />
-          <RouterProvider router={router} />
-        </div>
+        <PersistGate loading={null} persistor={persistor}>
+          <div className="App">
+            <Navbar />
+            <RouterProvider router={router} />
+          </div>
+        </PersistGate>
       </Provider>
     </ChakraProvider>
   );
